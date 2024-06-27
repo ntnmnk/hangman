@@ -11,9 +11,9 @@ public class DataSourceConfig {
     @Bean
     public DataSource dataSource() {
         return DataSourceBuilder.create()
-            .url("jdbc:mysql://localhost:3306/hangman")
+            .url("jdbc:mysql://root:ddcSLZsCHJntCrPmWTtUOMLmwXEoMqoN@roundhouse.proxy.rlwy.net:32284/railway")
             .username("root")
-            .password("")
+            .password("ddcSLZsCHJntCrPmWTtUOMLmwXEoMqoN")
             .build();
     }
 }
