@@ -9,13 +9,14 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
 import com.hitansh.hangman.model.User;
 
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 
 import com.hitansh.hangman.model.DatabaseRequestStatus;
 import com.hitansh.hangman.model.Role;
@@ -46,7 +47,7 @@ public class MySQLUserRepository implements IUserRepository{
                 statement.setString(5, newUser.getRole().toString());
                 statement.setInt(6, newUser.getTotalScore());
                 statement.executeUpdate();
-                log.info("User saved successfully");
+                    log.info("User saved successfully");
                 return DatabaseRequestStatus.SUCCESS;
             } catch (SQLException e) {
                 e.printStackTrace();

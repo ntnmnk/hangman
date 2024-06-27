@@ -13,7 +13,7 @@ public class DataSourceConfig {
         return DataSourceBuilder.create()
             .url("jdbc:mysql://localhost:3306/hangman")
             .username("root")
-            .password("12345678")
+            .password("")
             .build();
     }
 }
