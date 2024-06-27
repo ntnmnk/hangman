@@ -1,0 +1,683 @@
+openapi: 3.1.0
+
+info:
+  title: 'Hangman Game API'
+  version: '1.0.0'
+  description: 'Backend APIs for Hangman Game that allows admin to perform Words Management and see view statistics whereas for users, it allows them to do registeration, login , view profile, update profile, forgot-password, reset-password, play hangman game, and see leaderboard.'
+  termsOfService: 'https://hangman.com/terms-of-use'
+  contact:
+    name: 'Hitansh'
+    url: 'hangman.com'
+    email: 'hitanshgupta007@gmail.com'
+  license:
+    name: Hangman 1.0
+    url: 'http://www.hangman.org/licenses/LICENSE-2.0.html'
+
+servers:
+  - url: 'http://localhost:8080'
+    description: 'Hangman Game URL'
+
+tags: 
+  - name: 'user'
+    description: 'All endpoint related to user info, from sign up to profile management'
+  - name: 'word'
+    description: 'All endpoints related to word management, adding and deleting word to list words'
+  - name: 'game'
+    description: 'All endpoints related to game, from getting game for user to playing game'
+  - name: 'statistics'
+    description: 'All endpoints related to game statistics'
+
+paths:
+
+  /register:
+    post:
+      security: []
+      tags: [user]
+      description: Register new user to Hangman Game
+      summary: Register new user to Hangman Game
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: Sucessfully registered new user !!
+        400:
+          description: 'Bad Request - Invalid Input'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  
+  /login:
+    post:
+      security: []
+      tags: [user]
+      description: Login user into Hangman Game
+      summary: Login user into Hangman Game
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        200:
+          description: Successfully Login !!
+          content:
+            application/json:
+              schema:
+                properties:
+                  token:
+                    type: string
+        400:
+          description: 'Bad Request - Invalid Input'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  
+  /user/profile:
+    get:
+      tags: [user]
+      summary: 'Get profile of user'
+      description: 'Get profile of user'
+      responses:
+        200:
+          description: Success !!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  
+  /user/email:
+    post:
+      tags: [user]
+      summary: 'Update email of user'
+      description: 'Update email of user'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  pattern: .+@.+\..+
+                  example: hitansh@gmail.com
+      responses:
+        200:
+          description: 'Email updated successfully'
+        400:
+          description: 'Bad Request - Invalid Input'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+          
+  /user/reset-password:
+    post:
+      tags: [user]
+      summary: 'Update password of user'
+      description: 'Update password of user'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                oldPassword:
+                  type: string
+                  example: admin
+                newPassword:
+                  type: string
+                  example: admin
+      responses:
+        200:
+          description: 'Password updated successfully'
+        400:
+          description: 'Bad Request - Invalid Input'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+          
+  /user/forgot-password:
+    post:
+      tags: [user]
+      summary: 'Update password of user by sending it mail with reset link'
+      description: 'Update password of user by sending it mail with reset link'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  example: hitansh@gmail.com
+      responses:
+        200:
+          description: 'Password reset mail sent successfully'
+        400:
+          description: 'Bad Request - Invalid Input'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+          
+  /word:
+    post:
+      tags: [word]
+      summary: 'Adding a new word alongwith its hint for game'
+      description: 'Adding a new word alongwith its hint for game'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Word'
+      responses:
+        201:
+          description: 'Word added successfully'
+        400:
+          description: 'Bad Request - Invalid Input'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        
+  /word/{word}:
+    post:
+      tags: [word]
+      summary: 'Remove word alongwith its from game'
+      description: 'Remove word alongwith its from game'
+      parameters: 
+        - name: word
+          description: 'Word to remove'
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Word Removed successfully'
+        400:
+          description: 'Bad Request - Invalid Input'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+          
+  /words:
+    get:
+      tags: [word]
+      summary: 'List all words'
+      description: 'List all words'
+      responses:
+        200:
+          description: 'Retrieved all words alongwith their hints'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WordDetails'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  
+  /game-statistics:
+    get:
+      tags: [statistics]
+      summary: 'Get all users of game with their total score'
+      description: 'Get all users of game with their total score'
+      responses:
+        200:
+          description: 'Retrieved all users of game with their total score'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameStatistics'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+                
+  /game:
+    get:
+      tags: [game]
+      summary: 'Get new game for logged-in user'
+      description: 'Get new game for logged-in user'
+      responses:
+        200:
+          description: 'Returned game successfully'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+                
+  /games:
+    get:
+      tags: [game]
+      summary: 'get all games of logged-in user'
+      description: 'get all games of logged-in user'
+      responses:
+        200:
+          description: 'Successfully pulled all games for the logged-in user'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GamesForParticularUser'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  
+  /game/{gameId}:
+    get:
+      tags: [game]
+      summary: 'get a particular game for user'
+      description: 'get a particular game for user'
+      parameters: 
+        - name: gameId
+          description: 'Game ID'
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Successfully retrieved the game with details like word state, remaining lives and attempted characters'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GameDetails"
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails' 
+        404:
+          description: 'Invalid Game ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'         
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+                
+  /game/{gameId}/guess:
+    post:
+      tags: [game]
+      summary: 'posting guess of user'
+      description: 'posting guess of user'
+      parameters: 
+        - name: gameId
+          description: 'Game ID'
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                guess:
+                  type: string
+                  pattern: ^[a-z]$
+                  example: 'a'
+      responses:
+        200:
+          description: 'Successfully posted guess'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameDetails'
+        400:
+          description: 'Bad Request - If input is not single alphabet character or trying to guess for game which is already over'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+          
+  /game/{gameId}/quit:
+    post:
+      tags: [game]
+      summary: 'quitting game'
+      description: 'quitting game'
+      parameters: 
+        - name: gameId
+          description: 'Game ID'
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Game quit successfully'
+        401:
+          description: 'Unauthorized access'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+        403:
+          description: 'Request Forbidden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'       
+        500:
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+              
+components:
+  schemas:
+    User:
+      properties:
+        displayname:
+          type: string
+          example: hitansh
+        email:
+          type: string
+          pattern: .+@.+\..+
+          example: hitansh@gmail.com
+        password:
+          type: string
+          example: hitansh1992
+    Login:
+      properties:
+        email:
+          type: string
+          pattern: .+@.+\..+
+          example: hitansh@gmail.com
+        password:
+          type: string
+          example: admin
+    UserDetails:
+      properties:
+        displayName:
+          type: string
+          example: hitansh
+        email:
+          type: string
+          example: hitansh@gmail.com
+    WordDetails:
+      properties:
+        wordId:
+          type: string
+          example: abc123
+        word:
+          type: string
+          example: apple
+        hint:
+          type: string
+          example: a fruit
+    Word:
+      properties:
+        word:
+          type: string
+          example: apple
+        hint:
+          type: string
+          example: a fruit
+    Game:
+      properties:
+        gameId:
+          type: string
+    GamesForParticularUser:
+      properties:
+        games:
+          type: array
+          items:
+            type: object
+            properties:
+              gameId:
+                type: string
+              remainingLives:
+                  type: integer
+    GameDetails:
+      properties:
+        wordState:
+          type: string
+        remainingLives:
+          type: integer
+        attemptedCharacters:
+          type: array
+          items:
+            type: string
+            pattern: ^[a-z]$
+    GameStatistics:
+      properties:
+        username:
+          type: string
+        totalScore:
+          type: integer
+    ErrorDetails:
+      properties:
+        title:
+          type: string
+        message:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      
+security: 
+  - bearerAuth: []
