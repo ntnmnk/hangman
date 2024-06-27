@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.hitansh.hangman.model.WordTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-06-27T15:22:05" hostname="DESKTOP-88EK36K" time="0.021">
+<testsuite name="com.hitansh.hangman.model.WordTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-06-27T16:54:21" hostname="DESKTOP-88EK36K" time="0.012">
   <properties/>
-  <testcase name="testGetObscuredWord_Fail()" classname="com.hitansh.hangman.model.WordTest" time="0.013"/>
-  <testcase name="testGetObscuredWord_Pass()" classname="com.hitansh.hangman.model.WordTest" time="0.004"/>
+  <testcase name="testGetObscuredWord_Fail()" classname="com.hitansh.hangman.model.WordTest" time="0.007"/>
+  <testcase name="testGetObscuredWord_Pass()" classname="com.hitansh.hangman.model.WordTest" time="0.003"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
